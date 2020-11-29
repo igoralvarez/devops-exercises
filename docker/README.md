@@ -53,7 +53,7 @@
 
 - Si accedo a la url http://localhost:5000/api/topics veo que esta respondiendo con una lista vacía:
 
-![resultado vacío](./images/image1.png)
+![resultado vacío](./images/image1.PNG)
 
 - Comprobar la red lemoncode-challenge para comprobar que tenemos el mongo y el backend en la misma red:
 
@@ -88,7 +88,7 @@
 ```
 
 - Al acceder a localhost:3000 se ve la página de front levantada sin datos:
-  ![front sin datos](./images/image2.png)
+  ![front sin datos](./images/image2.PNG)
 - Me conecto al contenedor de la base de datos:
 
 ```bash
@@ -111,6 +111,6 @@
 ```
 
 - Al llamar al servicio se ve que devuelve los nuevos datos.
-  ![servicio devuelve datos](./images/image3.png)
+  ![servicio devuelve datos](./images/image3.PNG)
 - Al refrescar la aplicación se muestran los nuevos datos.
-  ![Frontend muestra los datos](./images/image4.png)
+  ![Frontend muestra los datos](./images/image4.PNG)
