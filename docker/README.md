@@ -1,84 +1,116 @@
 # devops-exercises
-1) Crear una red llamada lemoncode-challenge:
-docker network create lemoncode-challenge
 
-2)Creo un mongo asociado a la red lemoncode-challenge
-No poner usaurio y contraseña:
-docker run --name mymongo -p 27017:27017 -d --network lemoncode-challenge --mount source=my-mongo-data,target=/data/db mongo
+## Contenedores Ejercicio 1
 
-En mongoDB Compass: mongodb://localhost:27017
+- Crear una red llamada lemoncode-challenge:
 
-Para hacer la build del backend despues de generar el Dockerfile en VSCode:
+```bash
+  docker network create lemoncode-challenge
+```
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
-WORKDIR /app
-ENV MONGO_URI mymongouri
-COPY ["backend.csproj", "./"]
-COPY . .
-RUN dotnet restore "./backend.csproj"
-RUN dotnet build "backend.csproj" -c Release -o out
+- Crear un mongo asociado a la red lemoncode-challenge
 
-FROM build AS publish
-RUN dotnet publish "backend.csproj" -c Release -o out
+```bash
+  docker run --name mymongo -p 27017:27017 -d --network lemoncode-challenge --mount source=my-mongo-data,target=/data/db mongo
+```
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
-WORKDIR /app
-EXPOSE 80
-COPY --from=publish /app/out .
-ENTRYPOINT ["dotnet", "backend.dll"]
+- Accedo a la base de datos creada usando mongoDBCompass para comprobar que la base de datos está creada en la url:
 
-Lanzamos la instrucción para construir la imagen del backend:
-docker build . -t backend
+```bash
+  mongodb://localhost:27017
+```
 
-#Ejecutar la imagen metiendolo en la red lemoncode-challenge:
-#Hay que pasarle el valor de MONGO_URI:
-docker run -d --name my-backend --network lemoncode-challenge -p 5000:80 -e "MONGO_URI=mongodb://mymongo:27017" backend
+- Generar el Dockerfile para el backend:
 
-Si accedo a la url http://localhost:5000/api/topics veo que esta respondiendo con una lista vacía.
+```bash
+  FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+  WORKDIR /app
+  ENV MONGO_URI mymongouri
+  COPY ["backend.csproj", "./"]
+  COPY . .
+  RUN dotnet restore "./backend.csproj"
+  RUN dotnet build "backend.csproj" -c Release -o out
+  FROM build AS publish
+  RUN dotnet publish "backend.csproj" -c Release -o out
+  FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+  WORKDIR /app
+  EXPOSE 80
+  COPY --from=publish /app/out .
+  ENTRYPOINT ["dotnet", "backend.dll"]
+```
 
-#comprobar la red lemoncode-challenge para comprobar que tenemos el mongo y el backend en la misma red:
-docker inspect lemoncode-challenge
+- Lanzar la instrucción para construir la imagen del backend:
 
-Para hacer la imagen del front:
-Genero el Dockerfile del front desde VSCode añadiendo la variable de entorno REACT_APP_API_URL:
+```bash
+  docker build . -t backend
+```
 
-FROM node:latest
-WORKDIR /app
-COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
-ENV NODE_ENV production
-ENV REACT_APP_API_URL http://localhost:5000/api/topics
-#COPY --from=dependencies /app/package.json ./
-RUN npm install --production --silent && mv node_modules ../
-COPY . .
-EXPOSE 3000
-CMD ["npm", "start"]
+- Ejecutar la imagen metiendolo en la red lemoncode-challenge y pasando la url de la base de datos:
 
-Lanzo la instrucción para construir la imagen del frontend:
-docker build . --tag=frontend
+```bash
+  docker run -d --name my-backend --network lemoncode-challenge -p 5000:80 -e "MONGO_URI=mongodb://mymongo:27017" backend
+```
 
-Probar primero sin meter en la misma red el front:
-docker run -d --name my-frontend -p 3000:3000 frontend
+- Si accedo a la url http://localhost:5000/api/topics veo que esta respondiendo con una lista vacía:
 
-Si accedo a localhost:3000 veo la página de front levantada pero sin datos:
+![resultado vacío](./images/image1.png)
 
-Me conecto a la base de datos:
-docker exec -it mymongo mongo
+- Comprobar la red lemoncode-challenge para comprobar que tenemos el mongo y el backend en la misma red:
 
-Introduzco unos datos:
-use TopicstoreDb
-db.Topics.insert({
-    Name: "my first topic"
-})
-db.Topics.insert({
-    Name: "my second topic"
-})
-db.Topics.insert({
-    Name: "another topic"
-})
+```bash
+  docker inspect lemoncode-challenge
+```
 
-Si llamo al servicio veo que se cargan devuelve los datos.
+- Para hacer la imagen del front. Creamos un Dockerfile del front:
 
-Si refresco la aplicación se me cargan los datos.
+```bash
+  FROM node:latest
+  WORKDIR /app
+  COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
+  ENV NODE_ENV production
+  ENV REACT_APP_API_URL http://localhost:5000/api/topics
+  RUN npm install --production --silent && mv node_modules ../
+  COPY . .
+  EXPOSE 3000
+  CMD ["npm", "start"]
+```
 
-TopicstoreDb
-TopicsCollectionName
+- Lanzar la instrucción para construir la imagen del frontend:
+
+```bash
+  docker build . --tag=frontend
+```
+
+- Crear un contenedor del frontend:
+
+```bash
+  docker run -d --name my-frontend -p 3000:3000 frontend
+```
+
+- Al acceder a localhost:3000 se ve la página de front levantada sin datos:
+  ![front sin datos](./images/image2.png)
+- Me conecto al contenedor de la base de datos:
+
+```bash
+  docker exec -it mymongo mongo
+```
+
+- Introducimos unos datos en la base de datosdatos:
+
+```bash
+    use TopicstoreDb
+    db.Topics.insert({
+        Name: "my first topic"
+    })
+    db.Topics.insert({
+        Name: "my second topic"
+    })
+    db.Topics.insert({
+        Name: "another topic"
+    })
+```
+
+- Al llamar al servicio se ve que devuelve los nuevos datos.
+  ![servicio devuelve datos](./images/image3.png)
+- Al refrescar la aplicación se muestran los nuevos datos.
+  ![Frontend muestra los datos](./images/image4.png)
