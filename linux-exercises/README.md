@@ -2,7 +2,7 @@
 
 ## Ejercicios CLI
 
-## Ejercicio 1:
+## Linux Ejercicio 1:
 
 Creamos los directorios:
 ```bash
@@ -70,7 +70,7 @@ foo
 └── empty
 ```
 
-## Ejercicio 2:
+## Linux Ejercicio 2:
 Volcamos el contenido de file1.txt a file2.txt:
 ```bash
 cat foo/dummy/file1.txt >> foo/dummy/file2.txt
@@ -115,7 +115,7 @@ foo
     └── file2.txt
 ```
 
-## Ejercicio 3:
+## Linux Ejercicio 3:
 Creo un script de bash al que voy a llamar createStructure.sh:
 ```bash
 #!/bin/bash
@@ -164,7 +164,7 @@ En ambos caso obtenemos el texto:
 Que me gusta la bash!!!!
 ```
 
-## Ejercicio 4:
+## Linux Ejercicio 4:
 Creo un script de bash al que llamo downloadWeb.sh con el siguiente contenido:
 ```bash
 #!/bin/bash
