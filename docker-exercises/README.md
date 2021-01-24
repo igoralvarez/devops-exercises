@@ -14,7 +14,7 @@ docker network create lemoncode-challenge
 docker run --name mongodb -p 27017:27017 -d --network lemoncode-challenge --mount source=my-mongo-data,target=/data/db mongo
 ```
 
-- Accedo a la base de datos creada usando mongoDBCompass para comprobar que la base de datos está creada en la url:
+- Accedemos a la base de datos creada usando mongoDBCompass para comprobar que la base de datos está creada en la url:
 
 ```bash
 mongodb://localhost:27017
@@ -44,13 +44,13 @@ ENTRYPOINT ["dotnet", "backend.dll"]
 docker build . -t backend
 ```
 
-- Ejecutar la imagen metiendolo en la red lemoncode-challenge y pasando la url de la base de datos:
+- Ejecutar la imagen metiéndolo en la red lemoncode-challenge y pasando la url de la base de datos:
 
 ```bash
 docker run -d --name my-backend --network lemoncode-challenge -p 5000:80 -e "MONGO_URI=mongodb://mongodb:27017" backend
 ```
 
-- Si accedo a la url http://localhost:5000/api/topics veo que esta respondiendo con una lista vacía:
+- Si accedemos a la url http://localhost:5000/api/topics vemos que esta respondiendo con una lista vacía:
 
 ![resultado vacío](./images/image1.PNG)
 
@@ -60,7 +60,7 @@ docker run -d --name my-backend --network lemoncode-challenge -p 5000:80 -e "MON
 docker inspect lemoncode-challenge
 ```
 
-- Para hacer la imagen del front. Creamos un [Dockerfile](https://github.com/igoralvarez/devops-exercises/blob/main/docker-exercises/lemoncode-challenge/frontend/Dockerfile) del front:
+- Para hacer la imagen del front. Creamos un [Dockerfile](https://github.com/igoralvarez/devops-exercises/blob/main/docker-exercises/lemoncode-challenge/frontend/Dockerfile) para el front:
 
 ```bash
 FROM node:latest
@@ -89,13 +89,13 @@ docker run -d --name my-frontend -p 3000:3000 frontend
 - Al acceder a localhost:3000 se ve la página de front levantada sin datos:
   ![front sin datos](./images/image2.PNG)
 
-- Me conecto al contenedor de la base de datos:
+- Nos conectamos a la base de datos:
 
 ```bash
 docker exec -it mongodb mongo
 ```
 
-- Introducimos unos datos en la base de datosdatos:
+- Introducimos unos datos en la base de datos:
 
 ```bash
 use TopicstoreDb
@@ -155,7 +155,6 @@ networks:
 ```
 
 Levantamos el entorno:
-
 ```bash
 docker-compose up -d
 ```
@@ -168,7 +167,7 @@ docker inspect lemoncode-challenge_lemoncode-challenge
 
 - También se ha creado una red "lemoncode-challenge_default". Si inspeccionamos esa red vemos que en esa red está incluido el front al que no le habiamos asignado ninguna red.
 
-- Si accedo a la url http://localhost:5000/api/topics veo que esta respondiendo con una lista vacía:
+- Si accedemos a la url http://localhost:5000/api/topics vemos que esta respondiendo con una lista vacía:
 
 ![resultado vacío](./images/image1.PNG)
 
@@ -187,13 +186,11 @@ docker exec -it mongodb mongo
   ![Frontend muestra los datos](./images/image4.PNG)
 
 Para parar el entorno lanzamos:
-
 ```bash
 docker-compose stop
 ```
 
 Para eliminarlo junto con los volumenes asociados lanzamos:
-
 ```bash
 docker-compose down -v
 ```

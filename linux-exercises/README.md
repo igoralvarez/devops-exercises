@@ -36,7 +36,7 @@ Creamos el fichero file2.txt vacío:
 ```bash
 touch foo/dummy/file2.txt
 ```
-Creo un script de bash para comprobar que el fichero file2.txt está vacio y lo llamo checkEmpty.sh:
+Creamos un script de bash para comprobar que el fichero file2.txt está vacio y lo llamamos checkEmpty.sh:
 ```bash
 #!/bin/bash
 if [[ -s $1 ]] ; then
@@ -45,15 +45,15 @@ else
 echo "$1 is empty."
 fi ;
 ```
-Le doy permisos de ejecución:
+Le damos permisos de ejecución:
 ```bash
 chmod +x ./checkEmpty.sh
 ```
-Lanzo el script pasandole como parametro el fichero file2.txt:
+Lanzamos el script pasándole como parámetro el fichero file2.txt:
 ```bash
 ./checkEmpty.sh 'foo/dummy/file2.txt'
 ```
-La respuesta es:
+La respuesta obtenida es:
 ```bash
 foo/dummy/file2.txt is empty.
 ```
@@ -116,7 +116,7 @@ foo
 ```
 
 ## Linux Ejercicio 3:
-Creo un script de bash al que voy a llamar createStructure.sh:
+Creamos un script de bash llamado createStructure.sh con el siguiente contenido:
 ```bash
 #!/bin/bash
 if [ $# -eq 0 ]; then
@@ -130,11 +130,11 @@ touch foo/dummy/file2.txt
 cat foo/dummy/file1.txt >> foo/dummy/file2.txt
 mv foo/dummy/file2.txt foo/empty   
 ```
-Le doy permisos de ejecución:
+Le damos permisos de ejecución:
 ```bash
 chmod +x ./createStructure.sh
 ```
-y lo ejecuto:
+y lo ejecutamos:
 ```bash
 ./createStructure.sh
 ```
@@ -151,6 +151,7 @@ foo
     └── file2.txt
 ```
 La estructura es correcta.
+
 Comprobamos el contenido de los ficheros:
 ```bash
 cat foo/dummy/file1.txt
@@ -165,7 +166,7 @@ Que me gusta la bash!!!!
 ```
 
 ## Linux Ejercicio 4:
-Creo un script de bash al que llamo downloadWeb.sh con el siguiente contenido:
+Creamos un script de bash llamado downloadWeb.sh con el siguiente contenido:
 ```bash
 #!/bin/bash
 if [ $# -eq 0 ]
@@ -185,31 +186,31 @@ curl -s https://www.galdakao.eus > downloadedWeb.txt
 grep -n $searchWord downloadedWeb.txt  | cut -d : -f 1
 ```
 
-Le doy permisos de ejecución:
+Le damos permisos de ejecución:
 ```bash
 chmod +x ./downloadWeb.sh
 ```
-Lo ejecuto sin pasarle ningún parametro:
+Lo ejecutamos sin pasarle ningún parametro:
 ```bash
 ./downloadWeb.sh
 ```
-Me muestra el siguiente mensaje:
+Muestra el siguiente mensaje de error:
 ```bash
 Error: please provide argument.
 ```
-Lo ejecuto pasandole más de un parámetro:
+Lo ejecutamos pasándole más de un parámetro:
 ```bash
 ./downloadWeb.sh Bienvenidos a la web
 ```
-Me muestra el siguiente mensaje:
+Muestra el siguiente mensaje:
 ```bash
 Error: too many arguments.
 ```
-Lo ejecuto pasandole pasándole un único parámetro:
+Lo ejecutamos pasándole un único parámetro:
 ```bash
 ./downloadWeb.sh Galdakao
 ```
-Me muestra las líneas en las que se encuentra la palabra buscada:
+Muestra las líneas en las que se encuentra la palabra buscada:
 ```bash
 12
 23
