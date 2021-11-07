@@ -1,0 +1,31 @@
+pipeline {
+  agent {
+    docker {
+      image 'gradle'
+    }
+  }
+  environment {
+    EXERCISE='Exercise 2'
+    MYPATH='./ci-cd-exercises/jenkins-exercises/exercise-2/calculator'
+  }
+  stages {
+    stage('Compile') {
+      steps {
+        dir("$MYPATH") {
+          echo "This is the build number $BUILD_NUMBER of $EXERCISE"
+          sh '''
+            chmod +x gradlew
+            ./gradlew compileJava
+          '''
+        }
+      }
+    }
+    stage('Unit Test') {
+      steps {
+        dir("$MYPATH") {
+          sh './gradlew test'
+        }
+      }
+    }
+  }
+}

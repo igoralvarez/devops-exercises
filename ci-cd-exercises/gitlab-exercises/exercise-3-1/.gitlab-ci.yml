@@ -1,0 +1,10 @@
+stages:
+  - cloneProject
+
+cloneProject:springapp:
+  image:
+    name: alpine/git:latest
+    entrypoint: [""]
+  stage: cloneProject
+  script:
+    - git clone http://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.local:8888/bootcamp/springapp.git

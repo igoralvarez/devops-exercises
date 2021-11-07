@@ -1,0 +1,24 @@
+pipeline {
+  agent any
+  stages {
+    stage('Compile') {
+      steps {
+        dir('./ci-cd-exercises/jenkins-exercices/exercise-1/calculator') {
+          sh '''
+            chmod +x gradlew
+            ./gradlew compileJava
+          '''
+        }
+      }
+    }
+    stage('Unit Test') {
+      steps {
+        dir('./ci-cd-exercises/jenkins-exercices/exercise-1/calculator') {
+          sh '''
+            ./gradlew test
+          '''
+        }
+      }
+    }
+  }
+}
